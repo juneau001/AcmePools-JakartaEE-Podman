@@ -7,9 +7,6 @@
 package com.acme.acmepools.session;
 
 import com.acme.acmepools.entity.Job;
-import com.acme.acmepools.entity.Job;
-import com.acme.acmepools.entity.MicroMarket;
-import jakarta.ejb.Stateless;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Named;
 import jakarta.persistence.EntityManager;
@@ -17,7 +14,6 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
-import javax.print.attribute.standard.JobSheets;
 import java.io.Serializable;
 import java.util.List;
 

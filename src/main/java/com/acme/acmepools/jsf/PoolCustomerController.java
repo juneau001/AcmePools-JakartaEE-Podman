@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import jakarta.ejb.EJB;
-import jakarta.ejb.EJBException;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.SessionScoped;
@@ -26,7 +24,7 @@ import jakarta.faces.convert.FacesConverter;
 public class PoolCustomerController implements Serializable {
 
     @Inject
-    private com.acme.acmepools.session.PoolCustomerFacade ejbFacade;
+    private com.acme.acmepools.session.PoolCustomerFacade cdiFacade;
     private List<PoolCustomer> items = null;
     private PoolCustomer selected;
 
@@ -48,7 +46,7 @@ public class PoolCustomerController implements Serializable {
     }
 
     private PoolCustomerFacade getFacade() {
-        return ejbFacade;
+        return cdiFacade;
     }
 
     public PoolCustomer prepareCreate() {
@@ -93,7 +91,7 @@ public class PoolCustomerController implements Serializable {
                     getFacade().remove(selected);
                 }
                 JsfUtil.addSuccessMessage(successMessage);
-            } catch (EJBException ex) {
+            } catch (Exception ex) {
                 String msg = "";
                 Throwable cause = ex.getCause();
                 if (cause != null) {
@@ -104,10 +102,7 @@ public class PoolCustomerController implements Serializable {
                 } else {
                     JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
                 }
-            } catch (Exception ex) {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-                JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            }
+            } 
         }
     }
 
@@ -123,7 +118,7 @@ public class PoolCustomerController implements Serializable {
         List<PoolCustomer> customers = new ArrayList<PoolCustomer>();
         try {
             customers = getFacade().findAll();
-        } catch (EJBException ex) {
+        } catch (Exception ex) {
             System.out.println("PoolCustomerController#getItemsAvailableSelectOne ERROR: " + ex.getMessage());
         }
         return customers;

@@ -6,7 +6,6 @@ import com.acme.acmepools.session.ColumnModelFacade;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import jakarta.ejb.EJB;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
@@ -23,13 +22,13 @@ import org.primefaces.model.DualListModel;
 public class ColumnModelController implements Serializable {
 
     @Inject
-    ColumnModelFacade ejbFacade;
+    ColumnModelFacade cdiFacade;
 
     private PickListBean pickListBean;
     private List<ColumnModel> columns;
 
     public DualListModel<ColumnBean> getColumns() {
-        pickListBean = new PickListBean(ejbFacade.findAll());
+        pickListBean = new PickListBean(cdiFacade.findAll());
         return pickListBean.getColumns();
     }
 
@@ -84,7 +83,7 @@ public class ColumnModelController implements Serializable {
      */
     public String getColumnLabel(String columnName) {
 
-        com.acme.acmepools.entity.ColumnModel model = ejbFacade.findId(columnName);
+        com.acme.acmepools.entity.ColumnModel model = cdiFacade.findId(columnName);
         return model.getColumnLabel();
     }
 

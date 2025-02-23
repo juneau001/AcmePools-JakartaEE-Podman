@@ -8,8 +8,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import jakarta.ejb.EJB;
-import jakarta.ejb.EJBException;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIComponent;
@@ -30,7 +28,7 @@ import org.primefaces.event.CellEditEvent;
 public class CustomerController implements Serializable {
 
     @Inject
-    private com.acme.acmepools.session.CustomerFacade ejbFacade;
+    private com.acme.acmepools.session.CustomerFacade cdiFacade;
     private List<Customer> items = null;
     @Getter @Setter
     private Customer selected;
@@ -45,7 +43,7 @@ public class CustomerController implements Serializable {
     }
 
     private CustomerFacade getFacade() {
-        return ejbFacade;
+        return cdiFacade;
     }
 
     public Customer prepareCreate() {
@@ -90,7 +88,7 @@ public class CustomerController implements Serializable {
                     getFacade().remove(selected);
                 }
                 JsfUtil.addSuccessMessage(successMessage);
-            } catch (EJBException ex) {
+            } catch (Exception ex) {
                 String msg = "";
                 Throwable cause = ex.getCause();
                 if (cause != null) {
@@ -101,9 +99,6 @@ public class CustomerController implements Serializable {
                 } else {
                     JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
                 }
-            } catch (Exception ex) {
-                log.error(ex);
-                JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             }
         }
     }
@@ -168,7 +163,7 @@ public class CustomerController implements Serializable {
                 // Save to the database
                 DataTable table = (DataTable) event.getSource();
                 Customer customer = (Customer) table.getRowData();
-                ejbFacade.edit(customer);
+                cdiFacade.edit(customer);
                 FacesContext.getCurrentInstance().addMessage(null, 
                     new FacesMessage(FacesMessage.SEVERITY_INFO,"Successfully Updated", "Updated value to " + newValue));  
             }
@@ -178,7 +173,7 @@ public class CustomerController implements Serializable {
         Map requestMap = FacesContext.getCurrentInstance().
                 getExternalContext().getRequestParameterMap();
         String customer = (String) requestMap.get("customer");
-        selected = ejbFacade.find(Integer.valueOf(customer));
+        selected = cdiFacade.find(Integer.valueOf(customer));
         return "customerInfo";
     }
     

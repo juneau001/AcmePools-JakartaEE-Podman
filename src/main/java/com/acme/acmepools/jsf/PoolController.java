@@ -10,8 +10,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import jakarta.ejb.EJB;
-import jakarta.ejb.EJBException;
+
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.SessionScoped;
@@ -25,7 +24,7 @@ import jakarta.faces.convert.FacesConverter;
 public class PoolController implements Serializable {
 
     @Inject
-    private com.acme.acmepools.session.PoolFacade ejbFacade;
+    private com.acme.acmepools.session.PoolFacade cdiFacade;
     private List<Pool> items = null;
     private List<Pool> filteredPools;
     private Pool selected;
@@ -48,7 +47,7 @@ public class PoolController implements Serializable {
     }
 
     private PoolFacade getFacade() {
-        return ejbFacade;
+        return cdiFacade;
     }
 
     public Pool prepareCreate() {
@@ -93,7 +92,7 @@ public class PoolController implements Serializable {
                     getFacade().remove(selected);
                 }
                 JsfUtil.addSuccessMessage(successMessage);
-            } catch (EJBException ex) {
+            } catch (Exception ex) {
                 String msg = "";
                 Throwable cause = ex.getCause();
                 if (cause != null) {
@@ -104,9 +103,6 @@ public class PoolController implements Serializable {
                 } else {
                     JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
                 }
-            } catch (Exception ex) {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-                JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             }
         }
     }

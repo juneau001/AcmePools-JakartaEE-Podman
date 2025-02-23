@@ -6,13 +6,10 @@ import com.acme.acmepools.entity.util.JsfUtil;
 import com.acme.acmepools.entity.util.JsfUtil.PersistAction;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import jakarta.ejb.EJB;
-import jakarta.ejb.EJBException;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.SessionScoped;
@@ -25,8 +22,9 @@ import jakarta.faces.convert.FacesConverter;
 @SessionScoped
 public class JobController implements Serializable {
 
+
     @Inject
-    private com.acme.acmepools.session.JobFacade ejbFacade;
+    private com.acme.acmepools.session.JobFacade cdiFacade;
     private List<Job> items = null;
     private Job selected;
 
@@ -48,7 +46,7 @@ public class JobController implements Serializable {
     }
 
     private JobFacade getFacade() {
-        return ejbFacade;
+        return cdiFacade;
     }
 
     public Job prepareCreate() {
@@ -93,7 +91,7 @@ public class JobController implements Serializable {
                     getFacade().remove(selected);
                 }
                 JsfUtil.addSuccessMessage(successMessage);
-            } catch (EJBException ex) {
+            } catch (Exception ex) {
                 String msg = "";
                 Throwable cause = ex.getCause();
                 if (cause != null) {
@@ -104,9 +102,6 @@ public class JobController implements Serializable {
                 } else {
                     JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
                 }
-            } catch (Exception ex) {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-                JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             }
         }
     }

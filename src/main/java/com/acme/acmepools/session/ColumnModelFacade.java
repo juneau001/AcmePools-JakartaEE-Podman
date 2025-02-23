@@ -7,8 +7,6 @@
 package com.acme.acmepools.session;
 
 import com.acme.acmepools.entity.ColumnModel;
-import com.acme.acmepools.entity.Customer;
-import jakarta.ejb.Stateless;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Named;
 import jakarta.persistence.EntityManager;
